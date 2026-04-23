@@ -132,3 +132,73 @@ def capturar_valor(url: str, xpath: str) -> float | None:
 
     finally:
         driver.quit()
+
+def detectar_xpath_automatico(url: str) -> str | None:
+    """
+    Abre a página e aguarda o usuário clicar no elemento desejado.
+
+    Args:
+        url: Endereço da página a ser monitorada.
+
+    Returns:
+        String com o XPath do elemento clicado, ou None se falhar.
+
+    Complexity:
+        O(1).
+    """
+    options = webdriver.ChromeOptions()
+    options.binary_location = "/usr/bin/google-chrome"
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options
+    )
+
+    try:
+        driver.get(url)
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
+
+        # Injeta script que captura o XPath do elemento clicado
+        driver.execute_script("""
+            window._xpathCapturado = null;
+            document.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var el = e.target;
+                function getXPath(el) {
+                    if (el.id) return '//*[@id="' + el.id + '"]';
+                    if (el === document.body) return '/html/body';
+                    if (!el.parentNode) return '';
+                    var ix = 1;
+                    var siblings = el.parentNode.children;
+                    for (var i = 0; i < siblings.length; i++) {
+                        if (siblings[i] === el) break;
+                        if (siblings[i].tagName === el.tagName) ix++;
+                    }
+                    return getXPath(el.parentNode) + '/' + el.tagName.toLowerCase() + '[' + ix + ']';
+                }
+                window._xpathCapturado = getXPath(el);
+            }, true);
+        """)
+
+        print("Clique no elemento que deseja monitorar no navegador...")
+
+        # Aguarda até 30 segundos o usuário clicar
+        import time
+        for _ in range(30):
+            time.sleep(1)
+            xpath = driver.execute_script("return window._xpathCapturado;")
+            if xpath:
+                print(f"XPath capturado: {xpath}")
+                return xpath
+
+        print("Tempo esgotado. Nenhum elemento clicado.")
+        return None
+
+    except Exception as e:
+        print(f"Erro ao detectar XPath: {e}")
+        return None
+
+    finally:
+        driver.quit()

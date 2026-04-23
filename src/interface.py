@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import threading
 from src.user import validar_nome
-from src.scraper import capturar_valor
+from src.scraper import capturar_valor, detectar_xpath_automatico
 from src.monitor import iniciar_monitoramento
 from src.logger import Logger
 
@@ -20,8 +20,26 @@ def main():
     entrada_url.pack()
 
     tk.Label(janela, text="XPath do elemento:").pack(pady=5)
-    entrada_xpath = tk.Entry(janela, width=40)
-    entrada_xpath.pack()
+    frame_xpath = tk.Frame(janela)
+    frame_xpath.pack()
+    entrada_xpath = tk.Entry(frame_xpath, width=30)
+    entrada_xpath.pack(side=tk.LEFT)
+
+    def detectar():
+        url = entrada_url.get().strip()
+        if not url.startswith("http"):
+            messagebox.showerror("Erro", "Informe a URL primeiro.")
+            return
+        print("Detectando XPath...")
+        xpath = detectar_xpath_automatico(url)
+        if xpath:
+            entrada_xpath.delete(0, tk.END)
+            entrada_xpath.insert(0, xpath)
+            print(f"XPath detectado: {xpath}")
+        else:
+            messagebox.showerror("Erro", "Não foi possível detectar o XPath.")
+
+    tk.Button(frame_xpath, text="Detectar", command=detectar).pack(side=tk.LEFT, padx=5)
 
     tk.Label(janela, text="Intervalo (segundos):").pack(pady=5)
     entrada_intervalo = tk.Entry(janela, width=40)
@@ -30,6 +48,14 @@ def main():
     tk.Label(janela, text="E-mail de destino:").pack(pady=5)
     entrada_email = tk.Entry(janela, width=40)
     entrada_email.pack()
+
+    tk.Label(janela, text="Seu e-mail (remetente):").pack(pady=5)
+    entrada_remetente = tk.Entry(janela, width=40)
+    entrada_remetente.pack()
+
+    tk.Label(janela, text="Senha de app do Gmail:").pack(pady=5)
+    entrada_senha = tk.Entry(janela, width=40, show="*")
+    entrada_senha.pack()
 
     def iniciar():
         nome = entrada_nome.get().strip()
@@ -67,7 +93,7 @@ def main():
 
         thread = threading.Thread(
             target=iniciar_monitoramento,
-            args=(url, xpath, intervalo, email, nome, logger),
+            args=(url, xpath, intervalo, email, entrada_remetente.get().strip(), entrada_senha.get().strip(), nome, logger),
             daemon=True
         )
         thread.start()

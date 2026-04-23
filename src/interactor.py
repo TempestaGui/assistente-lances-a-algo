@@ -1,22 +1,20 @@
 import logging
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+import smtplib
+from email.mime.text import MIMEText
 
 logger = logging.getLogger(__name__)
 
-def interagir_pagina_externa(valor_anterior: float, valor_atual: float, email_destino: str):
+def interagir_pagina_externa(valor_anterior: float, valor_atual: float, email_destino: str, email_remetente: str, senha_app: str):
     """
-    Abre o Gmail, preenche um rascunho com os valores e clica em enviar.
+    Envia um e-mail via SMTP ao detectar alteração de valor.
 
     Args:
         valor_anterior: Valor antes da alteração.
         valor_atual: Valor após a alteração.
         email_destino: E-mail do destinatário.
-    
+        email_remetente: E-mail do remetente (Gmail).
+        senha_app: Senha de app gerada no Google.
+
     Complexity:
         O(1) — operações fixas independente dos valores.
     """
@@ -24,34 +22,18 @@ def interagir_pagina_externa(valor_anterior: float, valor_atual: float, email_de
     print(f"[INTERACTOR] {mensagem}")
     logger.info(mensagem)
 
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
     try:
-        driver.get("https://mail.google.com")
-        wait = WebDriverWait(driver, 20)
+        msg = MIMEText(mensagem)
+        msg['Subject'] = "Alteração de valor detectada"
+        msg['From'] = email_remetente
+        msg['To'] = email_destino
 
-        botao_escrever = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[text()='Escrever']")))
-        botao_escrever.click()
-
-        campo_para = wait.until(EC.presence_of_element_located((By.NAME, "to")))
-        campo_para.send_keys(email_destino)
-
-        campo_assunto = driver.find_element(By.NAME, "subjectbox")
-        campo_assunto.send_keys("Alteração de valor detectada")
-
-        campo_corpo = driver.find_element(By.XPATH, "//div[@aria-label='Corpo da mensagem']")
-        campo_corpo.send_keys(mensagem)
-
-        botao_enviar = driver.find_element(By.XPATH, "//div[text()='Enviar']")
-        botao_enviar.click()
-
-        print("[INTERACTOR] E-mail enviado com sucesso!")
-        logger.info("E-mail enviado para %s", email_destino)
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(email_remetente, senha_app)
+            smtp.send_message(msg)
+            print("[INTERACTOR] E-mail enviado com sucesso!")
+            logger.info("E-mail enviado para %s", email_destino)
 
     except Exception as e:
-        print(f"[INTERACTOR] Erro ao interagir com Gmail: {e}")
-        logger.error("Erro ao interagir com Gmail: %s", e)
-
-    finally:
-        driver.quit()
+        print(f"[INTERACTOR] Erro ao enviar e-mail: {e}")
+        logger.error("Erro ao enviar e-mail: %s", e)
