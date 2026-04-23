@@ -1,0 +1,4 @@
+.pytest_cache
+__pycache__
+google-chrome-stable_current_amd64.dep
+venv
