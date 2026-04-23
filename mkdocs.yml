@@ -1,0 +1,12 @@
+site_name: Documentação do Projeto
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Análise Big O:
+    - scraper.py: big-o/scraper.md
+    - monitor.py: big-o/monitor.md
+    - interactor.py: big-o/interactor.md
+    - logger.py: big-o/logger.md
+    - user.py: big-o/user.md
