@@ -22,7 +22,7 @@ python main.py
 
 ## Membros
 
-- David Lopes
-- Guilherme Tempesta
-- Gabriel Feitosa
-- Gabrielle Rodrigues
+- [David Lopes](https://github.com/DavidLBO)
+- [Guilherme Tempesta](https://github.com/TempestaGui)
+- [Gabriel Feitosa](https://github.com/GabriFrnd)
+- [Gabrielle Rodrigues](https://github.com/gabzbiriba)
