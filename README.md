@@ -14,6 +14,8 @@ Sistema de monitoramento automático de valores em páginas web. O usuário info
 ## Como executar
 
 ```bash
+git clone https://github.com/TempestaGui/assistente-lances-a-algo
+git checkout develop
 pip install selenium webdriver-manager
 python main.py
 ```
