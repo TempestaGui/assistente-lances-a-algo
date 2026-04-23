@@ -1,0 +1,71 @@
+2026-04-23 10:32:39,221 - INFO - [gabrielle] Monitoramento iniciado: https://impostometro.com.br/
+2026-04-23 10:32:44,546 - INFO - ====== WebDriver manager ======
+2026-04-23 10:32:45,590 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:32:45,972 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:32:46,362 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 10:32:49,354 - INFO - Elemento encontrado no XPath: //*[@id="counterUF"] | Posição: x=97, y=2030
+2026-04-23 10:32:49,388 - INFO - Texto capturado: Milhões
+468
+Mil
+844
+Reais
+406
+Centavos
+985
+2026-04-23 10:32:51,580 - INFO - [gabrielle] Valor inicial: 468000.0
+2026-04-23 10:35:51,581 - INFO - ====== WebDriver manager ======
+2026-04-23 10:35:52,530 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:35:54,879 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:35:55,298 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 10:36:09,934 - INFO - Elemento encontrado no XPath: //*[@id="counterUF"] | Posição: x=97, y=2030
+2026-04-23 10:36:09,968 - INFO - Texto capturado: Bilhões
+468
+Milhões
+854
+Mil
+287
+Reais
+832
+2026-04-23 10:36:12,218 - INFO - [gabrielle] Verificação: 468854000.0
+2026-04-23 10:36:12,219 - INFO - [gabrielle] Alteração: 468000.0 \u2192 468854000.0
+2026-04-23 10:36:12,219 - INFO - Valor alterado: 468000.0 \u2192 468854000.0
+2026-04-23 10:36:17,564 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 10:39:17,821 - INFO - ====== WebDriver manager ======
+2026-04-23 10:39:19,039 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:39:22,996 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:39:23,397 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 10:39:29,920 - INFO - Elemento encontrado no XPath: //*[@id="counterUF"] | Posição: x=97, y=1960
+2026-04-23 10:39:29,937 - INFO - Texto capturado: Milhões
+000
+Mil
+000
+Reais
+000
+2026-04-23 10:39:32,187 - INFO - [gabrielle] Verificação: 0.0
+2026-04-23 10:39:32,187 - INFO - [gabrielle] Alteração: 468854000.0 \u2192 0.0
+2026-04-23 10:39:32,188 - INFO - Valor alterado: 468854000.0 \u2192 0.0
+2026-04-23 10:39:37,526 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 10:42:37,782 - INFO - ====== WebDriver manager ======
+2026-04-23 10:42:38,876 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:42:39,307 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:42:39,719 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 10:42:52,137 - INFO - Elemento encontrado no XPath: //*[@id="counterUF"] | Posição: x=97, y=1960
+2026-04-23 10:42:52,158 - INFO - Texto capturado: Milhões
+000
+Mil
+000
+Reais
+000
+2026-04-23 10:42:54,400 - INFO - [gabrielle] Verificação: 0.0
+2026-04-23 10:45:54,401 - INFO - ====== WebDriver manager ======
+2026-04-23 10:45:55,567 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:45:57,923 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 10:45:58,425 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 10:46:10,820 - INFO - Elemento encontrado no XPath: //*[@id="counterUF"] | Posição: x=97, y=1960
+2026-04-23 10:46:10,834 - INFO - Texto capturado: Milhões
+000
+Mil
+000
+Reais
+000
+2026-04-23 10:46:13,064 - INFO - [gabrielle] Verificação: 0.0

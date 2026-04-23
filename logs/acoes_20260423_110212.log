@@ -1,0 +1,78 @@
+2026-04-23 11:02:12,183 - INFO - [gabrielle] Monitoramento iniciado: https://impostometro.com.br/
+2026-04-23 11:02:17,598 - INFO - ====== WebDriver manager ======
+2026-04-23 11:02:18,583 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:02:19,000 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:02:19,403 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:02:33,397 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:02:33,409 - INFO - Texto capturado: 7
+2026-04-23 11:02:35,612 - INFO - [gabrielle] Valor inicial: 7.0
+2026-04-23 11:07:35,613 - INFO - ====== WebDriver manager ======
+2026-04-23 11:07:36,540 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:07:37,101 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:07:37,501 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:08:23,578 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:08:23,593 - INFO - Texto capturado: 0
+2026-04-23 11:08:25,792 - INFO - [gabrielle] Verificação: 0.0
+2026-04-23 11:08:25,793 - INFO - [gabrielle] Alteração: 7.0 \u2192 0.0
+2026-04-23 11:08:25,793 - INFO - Valor alterado: 7.0 \u2192 0.0
+2026-04-23 11:08:31,851 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:13:32,117 - INFO - ====== WebDriver manager ======
+2026-04-23 11:13:33,047 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:13:33,454 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:13:33,864 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:13:40,684 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:13:40,698 - INFO - Texto capturado: 6
+2026-04-23 11:13:42,891 - INFO - [gabrielle] Verificação: 6.0
+2026-04-23 11:13:42,891 - INFO - [gabrielle] Alteração: 0.0 \u2192 6.0
+2026-04-23 11:13:42,892 - INFO - Valor alterado: 0.0 \u2192 6.0
+2026-04-23 11:13:48,127 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:18:48,377 - INFO - ====== WebDriver manager ======
+2026-04-23 11:18:49,333 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:18:50,906 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:18:51,341 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:19:15,964 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:19:16,000 - INFO - Texto capturado: 4
+2026-04-23 11:19:18,230 - INFO - [gabrielle] Verificação: 4.0
+2026-04-23 11:19:18,230 - INFO - [gabrielle] Alteração: 6.0 \u2192 4.0
+2026-04-23 11:19:18,230 - INFO - Valor alterado: 6.0 \u2192 4.0
+2026-04-23 11:19:23,628 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:24:23,882 - INFO - ====== WebDriver manager ======
+2026-04-23 11:24:24,920 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:24:28,433 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:24:29,857 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:25:37,101 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:25:37,125 - INFO - Texto capturado: 7
+2026-04-23 11:25:39,360 - INFO - [gabrielle] Verificação: 7.0
+2026-04-23 11:25:39,361 - INFO - [gabrielle] Alteração: 4.0 \u2192 7.0
+2026-04-23 11:25:39,361 - INFO - Valor alterado: 4.0 \u2192 7.0
+2026-04-23 11:25:44,986 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:30:45,690 - INFO - ====== WebDriver manager ======
+2026-04-23 11:30:46,663 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:30:47,176 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:30:48,624 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:31:01,788 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:31:01,809 - INFO - Texto capturado: 5
+2026-04-23 11:31:04,094 - INFO - [gabrielle] Verificação: 5.0
+2026-04-23 11:31:04,094 - INFO - [gabrielle] Alteração: 7.0 \u2192 5.0
+2026-04-23 11:31:04,094 - INFO - Valor alterado: 7.0 \u2192 5.0
+2026-04-23 11:31:09,482 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:36:09,744 - INFO - ====== WebDriver manager ======
+2026-04-23 11:36:10,695 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:36:12,115 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:36:12,537 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:37:11,435 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:37:11,449 - INFO - Texto capturado: 0
+2026-04-23 11:37:13,688 - INFO - [gabrielle] Verificação: 0.0
+2026-04-23 11:37:13,688 - INFO - [gabrielle] Alteração: 5.0 \u2192 0.0
+2026-04-23 11:37:13,688 - INFO - Valor alterado: 5.0 \u2192 0.0
+2026-04-23 11:37:20,610 - INFO - E-mail enviado para rodriguesgabii4@gmail.com
+2026-04-23 11:42:20,864 - INFO - ====== WebDriver manager ======
+2026-04-23 11:42:21,827 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:42:22,205 - INFO - Get LATEST chromedriver version for google-chrome
+2026-04-23 11:42:22,571 - INFO - Driver [C:\Users\rodri\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+2026-04-23 11:42:24,917 - INFO - Elemento encontrado no XPath: //*[@id="counterBrasil"]/div[6]/div[2] | Posição: x=892, y=370
+2026-04-23 11:42:24,937 - INFO - Texto capturado: 4
+2026-04-23 11:42:27,302 - INFO - [gabrielle] Verificação: 4.0
+2026-04-23 11:42:27,303 - INFO - [gabrielle] Alteração: 0.0 \u2192 4.0
+2026-04-23 11:42:27,303 - INFO - Valor alterado: 0.0 \u2192 4.0
+2026-04-23 11:42:32,257 - INFO - E-mail enviado para rodriguesgabii4@gmail.com

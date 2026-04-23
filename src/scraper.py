@@ -94,7 +94,6 @@ def capturar_valor(url: str, xpath: str) -> float | None:
         O(n) — onde n é o tamanho do conteúdo da página.
     """
     options = webdriver.ChromeOptions()
-    options.binary_location = "/usr/bin/google-chrome"
 
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
@@ -147,7 +146,6 @@ def detectar_xpath_automatico(url: str) -> str | None:
         O(1).
     """
     options = webdriver.ChromeOptions()
-    options.binary_location = "/usr/bin/google-chrome"
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=options
