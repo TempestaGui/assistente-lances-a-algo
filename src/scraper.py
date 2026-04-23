@@ -77,3 +77,57 @@ def extrair_valor_numerico(texto: str) -> float | None:
         return float(padrao_int.group())
 
     return None
+
+
+def capturar_valor(url: str, xpath: str) -> float | None:
+    """
+    Acessa a URL e extrai o valor numérico do elemento indicado.
+
+    Args:
+        url: Endereço da página a ser monitorada.
+        xpath: Seletor XPath do elemento na página.
+
+    Returns:
+        Float com o valor encontrado, ou None se não encontrar.
+
+    Complexity:
+        O(n) — onde n é o tamanho do conteúdo da página.
+    """
+    options = webdriver.ChromeOptions()
+
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options
+    )
+
+    try:
+        driver.get(url)
+
+        wait = WebDriverWait(driver, 15)
+        elemento = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+
+        location = elemento.location
+        print(f"Elemento encontrado!")
+        print(f"XPath: {xpath}")
+        print(f"Posição: x={location['x']}, y={location['y']}")
+        logger.info("Elemento encontrado no XPath: %s | Posição: x=%s, y=%s", xpath, location['x'], location['y'])
+
+        texto = elemento.text
+        print(f"Texto capturado: '{texto}'")
+        logger.info("Texto capturado: %s", texto)
+
+        valor = extrair_valor_numerico(texto)
+
+        if valor is None:
+            print(f"Erro: valor numérico não encontrado. Texto lido: '{texto}'")
+            logger.warning("Valor não encontrado no elemento. Texto: %s", texto)
+
+        return valor
+
+    except Exception as e:
+        print(f"Erro ao capturar valor: {e}")
+        logger.error("Erro ao capturar valor: %s", e)
+        return None
+
+    finally:
+        driver.quit()
