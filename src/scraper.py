@@ -1,13 +1,16 @@
 import re
+import time
 import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
 logger = logging.getLogger(__name__)
+
 
 def extrair_valor_numerico(texto: str) -> float | None:
     """
@@ -22,7 +25,6 @@ def extrair_valor_numerico(texto: str) -> float | None:
     Complexity:
         O(n) — onde n é o comprimento do texto.
     """
-    # Junta tudo em uma linha só
     texto = texto.replace('\n', ' ')
     texto = re.sub(r'[R\$€£¥]', '', texto)
 
@@ -79,13 +81,63 @@ def extrair_valor_numerico(texto: str) -> float | None:
     return None
 
 
-def capturar_valor(url: str, xpath: str) -> float | None:
+def _aguardar_texto_nao_vazio(driver, xpath: str, timeout: int) -> str | None:
     """
-    Acessa a URL e extrai o valor numérico do elemento indicado.
+    Aguarda até que o elemento indicado pelo XPath tenha texto não vazio,
+    tentando tanto `.text` quanto o atributo `textContent` via JavaScript.
+
+    Isso resolve o caso de sites que preenchem o DOM via JavaScript após
+    o elemento já estar presente (ex: TradingView, cotações em tempo real).
 
     Args:
-        url: Endereço da página a ser monitorada.
-        xpath: Seletor XPath do elemento na página.
+        driver:  Instância ativa do WebDriver.
+        xpath:   Seletor XPath do elemento alvo.
+        timeout: Tempo máximo de espera em segundos.
+
+    Returns:
+        String com o texto do elemento, ou None se o tempo esgotar.
+
+    Complexity:
+        O(timeout) — polling a cada 0.5s até timeout.
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            elemento = driver.find_element(By.XPATH, xpath)
+
+            # Tenta .text primeiro (mais confiável quando disponível)
+            texto = elemento.text.strip()
+
+            # Fallback: lê via JS caso .text ainda esteja vazio
+            if not texto:
+                texto = driver.execute_script(
+                    "return arguments[0].textContent;", elemento
+                ).strip()
+
+            if texto:
+                return texto
+
+        except Exception:
+            pass  # elemento pode ter desaparecido temporariamente durante re-render
+
+        time.sleep(0.5)
+
+    return None
+
+
+def capturar_valor(url: str, xpath: str, timeout: int = 30) -> float | None:
+    """
+    Acessa a URL e extrai o valor numérico do elemento indicado,
+    aguardando ativamente o texto ser preenchido pelo JavaScript da página.
+
+    Diferente de `presence_of_element_located`, esta função só considera
+    o elemento pronto quando seu conteúdo de texto for não vazio —
+    evitando leituras vazias em páginas com dados carregados dinamicamente.
+
+    Args:
+        url:     Endereço da página a ser monitorada.
+        xpath:   Seletor XPath do elemento na página.
+        timeout: Tempo máximo (segundos) para aguardar o texto aparecer.
 
     Returns:
         Float com o valor encontrado, ou None se não encontrar.
@@ -94,6 +146,8 @@ def capturar_valor(url: str, xpath: str) -> float | None:
         O(n) — onde n é o tamanho do conteúdo da página.
     """
     options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
@@ -103,16 +157,29 @@ def capturar_valor(url: str, xpath: str) -> float | None:
     try:
         driver.get(url)
 
-        wait = WebDriverWait(driver, 15)
-        elemento = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        # Aguarda o elemento existir no DOM primeiro
+        WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((By.XPATH, xpath))
+        )
 
+        elemento = driver.find_element(By.XPATH, xpath)
         location = elemento.location
         print(f"Elemento encontrado!")
         print(f"XPath: {xpath}")
         print(f"Posição: x={location['x']}, y={location['y']}")
-        logger.info("Elemento encontrado no XPath: %s | Posição: x=%s, y=%s", xpath, location['x'], location['y'])
+        logger.info(
+            "Elemento encontrado no XPath: %s | Posição: x=%s, y=%s",
+            xpath, location['x'], location['y']
+        )
 
-        texto = elemento.text
+        # Aguarda o texto ser preenchido pelo JS da página
+        texto = _aguardar_texto_nao_vazio(driver, xpath, timeout=timeout)
+
+        if not texto:
+            print(f"Erro: elemento encontrado mas texto permaneceu vazio após {timeout}s.")
+            logger.warning("Texto vazio após timeout. XPath: %s", xpath)
+            return None
+
         print(f"Texto capturado: '{texto}'")
         logger.info("Texto capturado: %s", texto)
 
@@ -124,6 +191,11 @@ def capturar_valor(url: str, xpath: str) -> float | None:
 
         return valor
 
+    except TimeoutException:
+        print(f"Erro: elemento não encontrado no DOM em {timeout}s. Verifique o XPath.")
+        logger.error("Timeout ao localizar elemento. XPath: %s", xpath)
+        return None
+
     except Exception as e:
         print(f"Erro ao capturar valor: {e}")
         logger.error("Erro ao capturar valor: %s", e)
@@ -131,6 +203,7 @@ def capturar_valor(url: str, xpath: str) -> float | None:
 
     finally:
         driver.quit()
+
 
 def detectar_xpath_automatico(url: str) -> str | None:
     """
@@ -157,7 +230,6 @@ def detectar_xpath_automatico(url: str) -> str | None:
             EC.presence_of_element_located((By.TAG_NAME, "body"))
         )
 
-        # Injeta script que captura o XPath do elemento clicado
         driver.execute_script("""
             window._xpathCapturado = null;
             document.addEventListener('click', function(e) {
@@ -182,8 +254,6 @@ def detectar_xpath_automatico(url: str) -> str | None:
 
         print("Clique no elemento que deseja monitorar no navegador...")
 
-        # Aguarda até 30 segundos o usuário clicar
-        import time
         for _ in range(30):
             time.sleep(1)
             xpath = driver.execute_script("return window._xpathCapturado;")
