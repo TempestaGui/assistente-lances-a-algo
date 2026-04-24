@@ -51,10 +51,31 @@ Registrar uma ação é sempre a mesma operação: formatar uma mensagem e grav�
 
 ## 3. `interactor.py`
 
-### `interagir_pagina_externa(...)`
+### `_criar_driver(headless: bool) -> webdriver.Chrome`
 **Complexidade: O(1)**
 
-A função monta uma mensagem de e-mail e a envia via SMTP. São sempre os mesmos passos, sem nenhum laço ou estrutura que cresça com a entrada. O tempo de resposta da rede pode variar, mas isso não faz parte da análise de complexidade algorítmica.
+Instancia e configura um WebDriver Chrome com um conjunto fixo de argumentos. Independentemente dos parâmetros recebidos, o número de operações realizadas é sempre o mesmo — custo constante.
+
+---
+
+### `_registrar_em_pagina_externa(valor_anterior, valor_atual, headless, timeout) -> bool`
+**Complexidade: O(1)**
+
+Abre uma página de formulário de teste, preenche um campo de texto com a mensagem de alteração e clica no botão de submit. O fluxo tem sempre o mesmo número de etapas: abrir página, localizar elemento, preencher, clicar e verificar confirmação. Não há iteração sobre estruturas de dados variáveis, portanto o custo é constante. O tempo de espera pelo DOM é limitado pelo parâmetro `timeout`, que é um valor fixo.
+
+---
+
+### `_enviar_email(valor_anterior, valor_atual, email_destino, email_remetente, senha_app) -> bool`
+**Complexidade: O(1)**
+
+Monta uma mensagem de e-mail e a envia via SMTP. São sempre os mesmos passos, sem nenhum laço ou estrutura que cresça com a entrada. O tempo de resposta da rede pode variar, mas isso não faz parte da análise de complexidade algorítmica.
+
+---
+
+### `interagir_pagina_externa(...)` *(ponto de entrada principal)*
+**Complexidade: O(1)**
+
+Essa função orquestra as duas ações anteriores em sequência: chama `_registrar_em_pagina_externa` e depois `_enviar_email`, ambas de custo O(1). Como as chamadas são sequenciais e independentes, a complexidade total permanece O(1) — constante e independente de qualquer entrada.
 
 ---
 
@@ -67,10 +88,17 @@ Essa é uma das funções mais ricas do projeto. Ela percorre o texto de várias
 
 ---
 
-### `capturar_valor(url: str, xpath: str) -> float | None`
+### `_aguardar_texto_nao_vazio(driver, xpath: str, timeout: int) -> str | None`
+**Complexidade: O(timeout)**
+
+Essa função foi adicionada para lidar com páginas que carregam o conteúdo de forma dinâmica via JavaScript — casos em que o elemento já está no DOM, mas seu texto ainda está vazio. Ela executa um loop de polling que verifica o elemento a cada 0,5 segundo até encontrar texto não vazio ou o tempo se esgotar. O número de iterações é diretamente proporcional ao valor de `timeout`, portanto a complexidade é **O(timeout)**. Na prática, o custo real tende a ser bem menor, pois o loop encerra assim que o texto é encontrado.
+
+---
+
+### `capturar_valor(url: str, xpath: str, timeout: int) -> float | None`
 **Complexidade: O(n)**
 
-O Selenium abre a página, localiza o elemento pelo XPath e extrai o texto dele. Em seguida, esse texto é passado para `extrair_valor_numerico`, que custa O(n). Vale destacar que **n aqui representa o comprimento do texto do elemento localizado**, e não o tamanho da página inteira — a complexidade indicada originalmente no código era imprecisa nesse ponto.
+O Selenium abre a página e aguarda o elemento aparecer no DOM. Em seguida, delega para `_aguardar_texto_nao_vazio` — que tem custo O(timeout), tratado como constante — e então passa o texto capturado para `extrair_valor_numerico`, de custo O(n). A operação dominante é o processamento do texto, mantendo a complexidade em **O(n), onde n é o comprimento do texto do elemento localizado**. A descrição indicada no código ("n é o tamanho do conteúdo da página") continua imprecisa pelo mesmo motivo já apontado anteriormente.
 
 ---
 
@@ -115,7 +143,7 @@ A função cria um número fixo de componentes visuais (labels, campos de texto,
 
 ## 7. Resumo Geral
 
-A tabela abaixo consolida a complexidade de tempo de todas as funções analisadas ao longo do projeto. De forma geral, o comportamento dominante do sistema é **linear — O(n)** — o que é esperado para uma aplicação que lida principalmente com processamento de texto e varredura de strings. As únicas exceções notáveis são a função `detectar_xpath_automatico`, cuja complexidade real é **O(p × s)** devido à travessia recursiva da árvore DOM, e as funções de log e envio de e-mail, que operam em **tempo constante O(1)** por não dependerem de nenhuma estrutura de dados variável.
+A tabela abaixo consolida a complexidade de tempo de todas as funções analisadas ao longo do projeto. De forma geral, o comportamento dominante do sistema é **linear — O(n)** — o que é esperado para uma aplicação que lida principalmente com processamento de texto e varredura de strings. As únicas exceções notáveis são a função `detectar_xpath_automatico`, cuja complexidade real é **O(p × s)** devido à travessia recursiva da árvore DOM, e as funções de log, automação web e envio de e-mail, que operam em **tempo constante O(1)** por não dependerem de nenhuma estrutura de dados variável.
 
 | Arquivo | Função | Complexidade de Tempo |
 |---|---|---|
@@ -123,8 +151,12 @@ A tabela abaixo consolida a complexidade de tempo de todas as funções analisad
 | `user.py` | `obter_nome_usuario` | O(k × n) |
 | `logger.py` | `Logger.__init__` | O(1) |
 | `logger.py` | `Logger.registrar` | O(1) |
+| `interactor.py` | `_criar_driver` | O(1) |
+| `interactor.py` | `_registrar_em_pagina_externa` | O(1) |
+| `interactor.py` | `_enviar_email` | O(1) |
 | `interactor.py` | `interagir_pagina_externa` | O(1) |
 | `scraper.py` | `extrair_valor_numerico` | O(n) |
+| `scraper.py` | `_aguardar_texto_nao_vazio` | O(timeout) |
 | `scraper.py` | `capturar_valor` | O(n) |
 | `scraper.py` | `detectar_xpath_automatico` | O(p × s) |
 | `monitor.py` | `iniciar_monitoramento` | O(n) por iteração |
@@ -137,3 +169,4 @@ A tabela abaixo consolida a complexidade de tempo de todas as funções analisad
 > - **k** — número de tentativas do usuário
 > - **p** — profundidade do elemento na árvore DOM
 > - **s** — número de elementos irmãos (*siblings*) em cada nível do DOM
+> - **timeout** — tempo máximo de espera configurado para o polling do elemento
